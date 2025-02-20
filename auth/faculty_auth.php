@@ -18,7 +18,7 @@ if (empty($username) || empty($password)) {
 }
 
 // Prepare SQL statement to prevent SQL injection
-$sql = "SELECT id, name, password FROM students WHERE email = ?";
+$sql = "SELECT id, name, password FROM faculty WHERE email = ?";
 
 if ($stmt = mysqli_prepare($conn, $sql)) {
     mysqli_stmt_bind_param($stmt, "s", $username);
@@ -31,15 +31,15 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
             
             if (password_verify($password, $row['password'])) {
                 // Password is correct, create session
-                $_SESSION['student_id'] = $row['id'];
-                $_SESSION['student_name'] = $row['name'];
-                $_SESSION['user_type'] = 'student';
+                $_SESSION['faculty_id'] = $row['id'];
+                $_SESSION['faculty_name'] = $row['name'];
+                $_SESSION['user_type'] = 'faculty';
                 
                 echo json_encode([
                     'status' => 'success',
                     'message' => 'Login successful',
                     'name' => $row['name'],
-                    'user_type' => 'student'
+                    'user_type' => 'faculty'
                 ]);
             } else {
                 echo json_encode([
@@ -50,7 +50,7 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
         } else {
             echo json_encode([
                 'status' => 'error',
-                'message' => 'Student account not found'
+                'message' => 'Faculty account not found'
             ]);
         }
     } else {
