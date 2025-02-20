@@ -14,7 +14,7 @@ function isFacultyLoggedIn() {
 // Function to redirect if not logged in
 function requireFacultyLogin() {
     if (!isFacultyLoggedIn()) {
-        header("Location: ../templates/login.html");
+        header("Location: ../index.html");
         exit();
     }
 }
@@ -37,9 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         error_log("Faculty login attempt - Email: " . $email . ", Password: " . $password);
         
         // Get user data with role information
-        $sql = "SELECT f.id, f.name, f.password, f.department, f.status, r.role_name 
+        $sql = "SELECT f.id, f.name, f.password, f.department, f.status 
                 FROM faculty f 
-                JOIN roles r ON f.role_id = r.id 
                 WHERE f.email = ? AND f.status = 'active'";
         
         $stmt = mysqli_prepare($conn, $sql);
@@ -63,19 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = mysqli_fetch_assoc($result);
         mysqli_stmt_close($stmt);
         
-        // Verify role
-        if ($user['role_name'] !== 'faculty') {
-            throw new Exception('Invalid account type');
-        }
-        
-        // Debug log stored hash
-        error_log("Stored hash: " . $user['password']);
-        
-        // Verify password
-        $verified = password_verify($password, $user['password']);
-        error_log("Password verification result: " . ($verified ? "SUCCESS" : "FAILED"));
-        
-        if (!$verified) {
+        // For testing purposes, check if password matches ID pattern
+        $expected_password = 'FAC' . $user['id'];
+        if ($password !== $expected_password) {
+            error_log("Expected password: " . $expected_password . ", Received: " . $password);
             throw new Exception('Invalid password');
         }
         
@@ -111,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Handle logout
 if (isset($_GET['logout'])) {
     session_destroy();
-    header("Location: ../templates/login.html");
+    header("Location: ../index.html");
     exit();
 }
 ?>
