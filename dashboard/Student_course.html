@@ -1,0 +1,283 @@
+<?php require_once 'check_student_auth.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Courses</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+        }
+
+        .header {
+            background: #4c6ef5;
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .units-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .unit-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .unit-header {
+            background: #4c6ef5;
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .unit-content {
+            padding: 1.5rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .section-title {
+            color: #4c6ef5;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .btn {
+            background: #4c6ef5;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .btn:hover {
+            background: #3b5bdb;
+        }
+
+        .test-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .test-meta {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <?php include 'student_header.php'; ?>
+    <div class="header">
+        <div class="container">
+            <h1>Introduction to Computer Science</h1>
+            <p>CSC101 • Fall 2024 • Prof. Sarah Johnson</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="units-container">
+            <!-- Unit 1 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2h11A2.5 2.5 0 0 1 20 4.5v15a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5z"/>
+                        <path d="M8 7h8"/>
+                        <path d="M8 11h8"/>
+                        <path d="M8 15h8"/>
+                    </svg>
+                    Unit 1: Introduction to Programming
+                </div>
+                <div class="unit-content">
+                    <div class="content-grid">
+                        <div class="section">
+                            <div class="section-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M23 7l-7 5 7 5V7z"/>
+                                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                                </svg>
+                                Video Lectures
+                            </div>
+                            <div class="section-content">
+                                <div class="item">
+                                    <span>Lecture 1: Course Overview</span>
+                                    <button class="btn">Watch</button>
+                                </div>
+                                <div class="item">
+                                    <span>Lecture 2: Basic Syntax</span>
+                                    <button class="btn">Watch</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                </svg>
+                                Assignments
+                            </div>
+                            <div class="section-content">
+                                <div class="item">
+                                    <span>Programming Basics Assignment</span>
+                                    <button class="btn">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 11l3 3L22 4"/>
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                </svg>
+                                Tests
+                            </div>
+                            <div class="section-content">
+                                <div class="item">
+                                    <div class="test-info">
+                                        <span>Introduction MCQ Test</span>
+                                        <span class="test-meta">20 questions • 30 minutes</span>
+                                    </div>
+                                    <button class="btn">Start</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unit 2 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2h11A2.5 2.5 0 0 1 20 4.5v15a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5z"/>
+                        <path d="M8 7h8"/>
+                        <path d="M8 11h8"/>
+                        <path d="M8 15h8"/>
+                    </svg>
+                    Unit 2: Data Types and Variables
+                </div>
+                <div class="unit-content">
+                    <div class="content-grid">
+                        <div class="section">
+                            <div class="section-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M23 7l-7 5 7 5V7z"/>
+                                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                                </svg>
+                                Video Lectures
+                            </div>
+                            <div class="section-content">
+                                <div class="item">
+                                    <span>Lecture 1: Variables</span>
+                                    <button class="btn">Watch</button>
+                                </div>
+                                <div class="item">
+                                    <span>Lecture 2: Data Types</span>
+                                    <button class="btn">Watch</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                </svg>
+                                Assignments
+                            </div>
+                            <div class="section-content">
+                                <div class="item">
+                                    <span>Data Types Practice</span>
+                                    <button class="btn">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 11l3 3L22 4"/>
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                </svg>
+                                Tests
+                            </div>
+                            <div class="section-content">
+                                <div class="item">
+                                    <div class="test-info">
+                                        <span>Data Types MCQ Test</span>
+                                        <span class="test-meta">20 questions • 30 minutes</span>
+                                    </div>
+                                    <button class="btn">Start</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Units 3-5 would follow the same pattern -->
+        </div>
+    </div>
+</body>
+</html>

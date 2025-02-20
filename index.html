@@ -179,15 +179,15 @@
       <button class="toggle-btn active">Faculty</button>
       <button class="toggle-btn">Student</button>
     </div>
-    <form>
+    <form id="loginForm" method="POST">
       <div class="input-container">
         <span class="input-icon">👤</span>
-        <input type="text" class="input-field" placeholder="Faculty ID or Username">
+        <input type="email" class="input-field" id="email" name="email" placeholder="Faculty Email" required>
       </div>
       <div class="input-container">
         <span class="input-icon">🔑</span>
-        <input type="password" class="input-field" placeholder="Password">
-        <span class="show-password">👁️</span>
+        <input type="password" class="input-field" id="password" name="password" placeholder="Password" required>
+        <span class="show-password" onclick="togglePassword()">👁️</span>
       </div>
       <div class="button-container">
         <a href="#" class="forgot-password">Forgot Password?</a>
@@ -195,6 +195,62 @@
       </div>
     </form>
   </div>
-  <script src="login.js"></script>
+  <script>
+    // Toggle between Faculty and Student login
+    const toggleBtns = document.querySelectorAll('.toggle-btn');
+    let currentUserType = 'faculty';
+
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        toggleBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentUserType = btn.textContent.toLowerCase();
+        document.getElementById('email').placeholder = currentUserType === 'faculty' ? 'Faculty Email' : 'Student Email';
+      });
+    });
+
+    // Toggle password visibility
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const showPasswordBtn = document.querySelector('.show-password');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        showPasswordBtn.textContent = '🔒';
+      } else {
+        passwordInput.type = 'password';
+        showPasswordBtn.textContent = '👁️';
+      }
+    }
+
+    // Handle form submission
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      try {
+        const response = await fetch(`auth/${currentUserType}_auth.php`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          window.location.href = data.redirect;
+        } else {
+          alert(data.message || 'Login failed. Please check your credentials.');
+          console.error('Login failed:', data.message);
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        alert('An error occurred. Please try again.');
+      }
+    });
+  </script>
 </body>
 </html>
