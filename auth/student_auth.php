@@ -45,19 +45,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = mysqli_prepare($conn, $sql);
         
         if (!$stmt) {
-            throw new Exception("Database error: " . mysqli_error($conn));
+            error_log("Database error: " . mysqli_error($conn));
+            throw new Exception("Database error occurred");
         }
         
         mysqli_stmt_bind_param($stmt, "s", $email);
         
         if (!mysqli_stmt_execute($stmt)) {
-            throw new Exception("Query failed: " . mysqli_error($conn));
+            error_log("Query failed: " . mysqli_error($conn));
+            throw new Exception("Query failed");
         }
         
         $result = mysqli_stmt_get_result($stmt);
         
         if (mysqli_num_rows($result) !== 1) {
-            throw new Exception('Invalid email address');
+            error_log("Invalid email or account not found: " . $email);
+            throw new Exception('Invalid email or password');
         }
         
         $user = mysqli_fetch_assoc($result);
@@ -65,25 +68,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Verify role
         if ($user['role_name'] !== 'student') {
+            error_log("Invalid account type for email: " . $email);
             throw new Exception('Invalid account type');
         }
         
-        // Debug log stored hash
-        error_log("Stored hash: " . $user['password']);
-        
-        // Debug log input password (for debugging only)
-        error_log("Input password: " . $password);
+        // Debug log stored hash and input
+        error_log("Login attempt for email: " . $email);
+        error_log("Stored hash length: " . strlen($user['password']));
         
         // Verify password
+        if (empty($user['password'])) {
+            error_log("Error: Stored password hash is empty");
+            throw new Exception('Authentication error');
+        }
+        
         $verified = password_verify($password, $user['password']);
         error_log("Password verification result: " . ($verified ? "SUCCESS" : "FAILED"));
         
         if (!$verified) {
-            error_log("Password verification failed. Possible causes:"
-                . "\n- Incorrect password"
-                . "\n- Password hash mismatch"
-                . "\n- Database password field encoding issue");
-            throw new Exception('Invalid password. Please check your credentials and try again.');
+            error_log("Password verification failed for email: " . $email);
+            throw new Exception('Invalid email or password');
         }
         
         // Login successful
