@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Information - Introduction to Computer Science</title>
+    <title>Introduction to Computer Science</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
         }
 
         body {
-            background-color: #f8f9fe;
+            background: #f0f2f5;
         }
 
         .header {
-            background: linear-gradient(135deg, #4c6fff 0%, #6e48ff 100%);
+            background: #4c6ef5;
             color: white;
             padding: 2rem;
             margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            margin-bottom: 0.5rem;
         }
 
         .container {
@@ -29,196 +33,249 @@
             padding: 0 1rem;
         }
 
-        .course-title {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .course-subtitle {
-            opacity: 0.9;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        .units-container {
+            display: flex;
+            flex-direction: column;
             gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .unit-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .unit-header {
+            background: #4c6ef5;
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .unit-content {
+            padding: 1.5rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .section {
+            background: #f8f9fa;
+            border-radius: 8px;
             padding: 1rem;
         }
 
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+        .section-title {
+            color: #4c6ef5;
+            font-size: 1.1rem;
             margin-bottom: 1rem;
-            color: #4c6fff;
-            font-weight: bold;
-        }
-
-        .card-content {
-            color: #333;
-        }
-
-        .list-item {
-            padding: 0.75rem;
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-            background: #f8f9fe;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            transition: background-color 0.2s;
+            gap: 0.5rem;
         }
 
-        .list-item:hover {
-            background: #eef1ff;
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
-        .button {
-            background: #4c6fff;
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .btn {
+            background: #4c6ef5;
             color: white;
             border: none;
             padding: 0.5rem 1rem;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: background-color 0.2s;
+            font-size: 0.875rem;
         }
 
-        .button:hover {
-            background: #3955cc;
+        .btn:hover {
+            background: #3b5bdb;
         }
 
-        .camera-feed {
-            width: 100%;
-            height: 200px;
-            background: #eef1ff;
-            border-radius: 8px;
+        .test-info {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .test-meta {
+            font-size: 0.875rem;
+            color: #6c757d;
         }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="container">
-            <h1 class="course-title">Introduction to Computer Science</h1>
-            <p class="course-subtitle">CSC101 • Fall 2024 • Prof. Sarah Johnson</p>
+            <h1>Introduction to Computer Science</h1>
+            <p>CSC101 • Fall 2024 • Prof. Sarah Johnson</p>
         </div>
     </div>
 
     <div class="container">
-        <div class="grid">
-            <!-- Units and Content -->
-            <div class="card">
-                <div class="card-header">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+        <div class="units-container">
+            <!-- Unit 1 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2h11A2.5 2.5 0 0 1 20 4.5v15a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5z"/>
+                        <path d="M8 7h8"/>
+                        <path d="M8 11h8"/>
+                        <path d="M8 15h8"/>
                     </svg>
-                    Units and Content
+                    Unit 1: Introduction to Programming
                 </div>
-                <div class="card-content">
-                    <div class="list-item">Unit 1: Introduction to Programming</div>
-                    <div class="list-item">Unit 2: Data Types and Variables</div>
-                    <div class="list-item">Unit 3: Control Structures</div>
-                </div>
-            </div>
+                <div class="unit-content">
+                    <div class="content-grid">
+                        <div class="section">
+                            <div class="section-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M23 7l-7 5 7 5V7z"/>
+                                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                                </svg>
+                                Video Lectures
+                            </div>
+                            <div class="section-content">
+                                <div class="item">
+                                    <span>Lecture 1: Course Overview</span>
+                                    <button class="btn">Watch</button>
+                                </div>
+                                <div class="item">
+                                    <span>Lecture 2: Basic Syntax</span>
+                                    <button class="btn">Watch</button>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Video Lectures -->
-            <div class="card">
-                <div class="card-header">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                    </svg>
-                    Video Lectures
-                </div>
-                <div class="card-content">
-                    <div class="list-item">Lecture 1: Course Overview</div>
-                    <div class="list-item">Lecture 2: Basic Syntax</div>
-                    <div class="list-item">Lecture 3: Functions</div>
-                </div>
-            </div>
+                        <div class="section">
+                            <div class="section-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                </svg>
+                                Assignments
+                            </div>
+                            <div class="section-content">
+                                <div class="item">
+                                    <span>Programming Basics Assignment</span>
+                                    <button class="btn">Submit</button>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- File Management -->
-            <div class="card">
-                <div class="card-header">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                        <polyline points="13 2 13 9 20 9"></polyline>
-                    </svg>
-                    File Management
-                </div>
-                <div class="card-content">
-                    <div class="list-item">Course Syllabus.pdf</div>
-                    <div class="list-item">Week 1 Notes.pdf</div>
-                    <div class="list-item">Practice Problems.zip</div>
-                </div>
-            </div>
-
-            <!-- Assignment Submission -->
-            <div class="card">
-                <div class="card-header">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                    </svg>
-                    Assignment Submission
-                </div>
-                <div class="card-content">
-                    <div class="list-item">
-                        Assignment 1 <button class="button">Submit</button>
+                        <div class="section">
+                            <div class="section-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 11l3 3L22 4"/>
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                </svg>
+                                Tests
+                            </div>
+                            <div class="section-content">
+                                <div class="item">
+                                    <div class="test-info">
+                                        <span>Introduction MCQ Test</span>
+                                        <span class="test-meta">20 questions • 30 minutes</span>
+                                    </div>
+                                    <button class="btn">Start</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="list-item">
-                        Assignment 2 <button class="button">Submit</button>
+                </div>
+            </div>
+
+            <!-- Unit 2 -->
+            <div class="unit-card">
+                <div class="unit-header">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2h11A2.5 2.5 0 0 1 20 4.5v15a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5z"/>
+                        <path d="M8 7h8"/>
+                        <path d="M8 11h8"/>
+                        <path d="M8 15h8"/>
+                    </svg>
+                    Unit 2: Data Types and Variables
+                </div>
+                <div class="unit-content">
+                    <div class="content-grid">
+                        <div class="section">
+                            <div class="section-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M23 7l-7 5 7 5V7z"/>
+                                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                                </svg>
+                                Video Lectures
+                            </div>
+                            <div class="section-content">
+                                <div class="item">
+                                    <span>Lecture 1: Variables</span>
+                                    <button class="btn">Watch</button>
+                                </div>
+                                <div class="item">
+                                    <span>Lecture 2: Data Types</span>
+                                    <button class="btn">Watch</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                </svg>
+                                Assignments
+                            </div>
+                            <div class="section-content">
+                                <div class="item">
+                                    <span>Data Types Practice</span>
+                                    <button class="btn">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 11l3 3L22 4"/>
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                </svg>
+                                Tests
+                            </div>
+                            <div class="section-content">
+                                <div class="item">
+                                    <div class="test-info">
+                                        <span>Data Types MCQ Test</span>
+                                        <span class="test-meta">20 questions • 30 minutes</span>
+                                    </div>
+                                    <button class="btn">Start</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Course News -->
-            <div class="card">
-                <div class="card-header">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                    </svg>
-                    Course News
-                </div>
-                <div class="card-content">
-                    <div class="list-item">Quiz next week - Chapter 3</div>
-                    <div class="list-item">Office hours canceled tomorrow</div>
-                    <div class="list-item">New study materials uploaded</div>
-                </div>
-            </div>
-
-            <!-- Attendance Tracking -->
-            <div class="card">
-                <div class="card-header">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                        <circle cx="12" cy="13" r="4"></circle>
-                    </svg>
-                    Attendance Tracking
-                </div>
-                <div class="card-content">
-                    <div class="camera-feed">Camera Preview</div>
-                    <button class="button" style="width: 100%">Mark Attendance</button>
-                </div>
-            </div>
+            <!-- Units 3-5 would follow the same pattern -->
         </div>
     </div>
-    <script src="navigation.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', initStudentCourse);
-</script>
 </body>
 </html>
