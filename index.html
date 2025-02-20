@@ -179,15 +179,15 @@
       <button class="toggle-btn active">Faculty</button>
       <button class="toggle-btn">Student</button>
     </div>
-    <form id="loginForm" method="POST">
+    <form>
       <div class="input-container">
         <span class="input-icon">👤</span>
-        <input type="email" class="input-field" id="email" name="email" placeholder="Faculty Email" required>
+        <input type="text" class="input-field" placeholder="Faculty ID or Username">
       </div>
       <div class="input-container">
         <span class="input-icon">🔑</span>
-        <input type="password" class="input-field" id="password" name="password" placeholder="Password" required>
-        <span class="show-password" onclick="togglePassword()">👁</span>
+        <input type="password" class="input-field" placeholder="Password">
+        <span class="show-password">👁️</span>
       </div>
       <div class="button-container">
         <a href="#" class="forgot-password">Forgot Password?</a>
@@ -195,71 +195,6 @@
       </div>
     </form>
   </div>
-  <script>
-    // Toggle between Faculty and Student login
-    const toggleBtns = document.querySelectorAll('.toggle-btn');
-    let currentUserType = 'faculty';
-    const emailInput = document.getElementById('email');
-
-    toggleBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        toggleBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentUserType = btn.textContent.toLowerCase();
-        emailInput.placeholder = `${currentUserType.charAt(0).toUpperCase() + currentUserType.slice(1)} Email`;
-      });
-    });
-
-    function togglePassword() {
-      const passwordInput = document.getElementById('password');
-      const showPasswordBtn = document.querySelector('.show-password');
-      
-      if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        showPasswordBtn.textContent = '🔒';
-      } else {
-        passwordInput.type = 'password';
-        showPasswordBtn.textContent = '👁';
-      }
-    }
-
-    // Handle form submission
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      
-      try {
-        const response = await fetch(`auth/${currentUserType}_auth.php`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data.success) {
-          // Redirect to the appropriate dashboard
-          if (currentUserType === 'faculty') {
-            window.location.href = 'dashboard/faculty_dashboard.php';
-          } else {
-            window.location.href = 'dashboard/student_Dashboard.php';
-          }
-        } else {
-          alert(data.message || 'Login failed. Please check your credentials.');
-        }
-      } catch (error) {
-        console.error('Login error:', error);
-        alert('An error occurred. Please try again.');
-      }
-    });
-  </script>
+  <script src="login.js"></script>
 </body>
 </html>
