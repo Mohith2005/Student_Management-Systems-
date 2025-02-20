@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Course Management - CSC101</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white p-4 shadow-md">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold">Course Management - Introduction to Computer Science</h1>
+                    <p class="text-indigo-100">CSC101 • Fall 2024 • Prof. Sarah Johnson</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-indigo-100">
+                        <i class="fas fa-user-circle mr-2"></i> Prof. Sarah Johnson
+                    </span>
+                    <a href="#" class="bg-white text-indigo-600 px-4 py-2 rounded-md font-medium hover:bg-indigo-100">
+                        Log Out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Course Stats Bar -->
+    <div class="bg-white border-b py-4 shadow-sm mb-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-center px-4">
+                <div class="text-2xl font-bold text-indigo-600">87%</div>
+                <div class="text-sm text-gray-600">Average Attendance</div>
+            </div>
+            <div class="text-center px-4">
+                <div class="text-2xl font-bold text-indigo-600">92%</div>
+                <div class="text-sm text-gray-600">Task Completion</div>
+            </div>
+            <div class="text-center px-4">
+                <div class="text-2xl font-bold text-indigo-600">78%</div>
+                <div class="text-sm text-gray-600">Video Watch Rate</div>
+            </div>
+            <div class="text-center px-4">
+                <div class="text-2xl font-bold text-indigo-600">85</div>
+                <div class="text-sm text-gray-600">Daily Active Students</div>
+            </div>
+            <div>
+                <button id="attendance-btn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md font-medium flex items-center">
+                    <i class="fas fa-clipboard-check mr-2"></i> Update Attendance
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto pb-12">
+        <!-- Attendance Modal (Hidden by default) -->
+        <div id="attendance-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6 border-b flex justify-between items-center">
+                    <h2 class="text-xl font-bold">Update Attendance - Class Session 02/20/2025</h2>
+                    <button id="close-attendance" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Select Session Date:</label>
+                        <input type="date" class="border rounded p-2 w-full md:w-1/3" value="2025-02-20">
+                    </div>
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="p-3 text-left">Student ID</th>
+                                <th class="p-3 text-left">Student Name</th>
+                                <th class="p-3 text-center">Present</th>
+                                <th class="p-3 text-center">Absent</th>
+                                <th class="p-3 text-center">Excused</th>
+                                <th class="p-3 text-left">Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-3">CS001</td>
+                                <td class="p-3">John Doe</td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-1" value="present" checked></td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-1" value="absent"></td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-1" value="excused"></td>
+                                <td class="p-3"><input type="text" class="border rounded p-1 w-full" placeholder="Add note"></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3">CS002</td>
+                                <td class="p-3">Jane Smith</td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-2" value="present"></td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-2" value="absent" checked></td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-2" value="excused"></td>
+                                <td class="p-3"><input type="text" class="border rounded p-1 w-full" placeholder="Add note"></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3">CS003</td>
+                                <td class="p-3">Mike Johnson</td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-3" value="present" checked></td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-3" value="absent"></td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-3" value="excused"></td>
+                                <td class="p-3"><input type="text" class="border rounded p-1 w-full" placeholder="Add note"></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3">CS004</td>
+                                <td class="p-3">Emily Wilson</td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-4" value="present"></td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-4" value="absent"></td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-4" value="excused" checked></td>
+                                <td class="p-3"><input type="text" class="border rounded p-1 w-full" value="Doctor's appointment"></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3">CS005</td>
+                                <td class="p-3">Alex Barnes</td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-5" value="present" checked></td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-5" value="absent"></td>
+                                <td class="p-3 text-center"><input type="radio" name="attendance-5" value="excused"></td>
+                                <td class="p-3"><input type="text" class="border rounded p-1 w-full" placeholder="Add note"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="mt-6 flex justify-end">
+                        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded mr-2">
+                            Cancel
+                        </button>
+                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded">
+                            Save Attendance
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Content Units -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <!-- Unit Tabs -->
+            <div class="flex border-b">
+                <button class="px-6 py-3 font-medium border-b-2 border-indigo-600 text-indigo-600">Unit 1</button>
+                <button class="px-6 py-3 font-medium text-gray-600 hover:text-indigo-600">Unit 2</button>
+                <button class="px-6 py-3 font-medium text-gray-600 hover:text-indigo-600">Unit 3</button>
+                <button class="px-6 py-3 font-medium text-gray-600 hover:text-indigo-600">Unit 4</button>
+                <button class="px-6 py-3 font-medium text-gray-600 hover:text-indigo-600">Unit 5</button>
+            </div>
+            
+            <!-- Unit Content -->
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold">Unit 1: Introduction to Computing Concepts</h2>
+                    <div>
+                        <button class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-md text-sm font-medium mr-2">
+                            Edit Unit
+                        </button>
+                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-md text-sm font-medium">
+                            + Add Content
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Lecture Videos Section -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                        <i class="fas fa-video text-indigo-500 mr-2"></i> 
+                        Lecture Videos
+                        <span class="ml-2 text-sm text-gray-500 font-normal">(3 videos)</span>
+                    </h3>
+
+                    <div class="space-y-4">
+                        <!-- Video 1 -->
+                        <div class="flex items-start border rounded-lg p-4 bg-gray-50">
+                            <div class="flex-shrink-0 w-48 h-28 bg-gray-200 rounded flex items-center justify-center mr-4 relative">
+                                <img src="/api/placeholder/250/150" alt="Video thumbnail" class="w-full h-full object-cover rounded">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span class="bg-black bg-opacity-60 rounded-full w-10 h-10 flex items-center justify-center">
+                                        <i class="fas fa-play text-white"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">1.1 Course Introduction and Computing Fundamentals</h4>
+                                        <p class="text-sm text-gray-600 mt-1">Uploaded: 02/15/2025 • 45:12 mins • 87 views</p>
+                                    </div>
+                                    <div class="flex">
+                                        <button class="text-gray-500 hover:text-indigo-600 p-1">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-600 p-1">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-700 mt-2">
+                                    Introduction to the course structure, learning objectives and basic computing concepts.
+                                </p>
+                                <div class="mt-3 flex items-center text-sm">
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">Published</span>
+                                    <span class="ml-4 text-gray-600"><i class="fas fa-eye mr-1"></i> 92% watched</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Video 2 -->
+                        <div class="flex items-start border rounded-lg p-4 bg-gray-50">
+                            <div class="flex-shrink-0 w-48 h-28 bg-gray-200 rounded flex items-center justify-center mr-4 relative">
+                                <img src="/api/placeholder/250/150" alt="Video thumbnail" class="w-full h-full object-cover rounded">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span class="bg-black bg-opacity-60 rounded-full w-10 h-10 flex items-center justify-center">
+                                        <i class="fas fa-play text-white"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-medium">1.2 History of Computing and Binary System</h4>
+                                        <p class="text-sm text-gray-600 mt-1">Uploaded: 02/17/2025 • 53:18 mins • 75 views</p>
+                                    </div>
+                                    <div class="flex">
+                                        <button class="text-gray-500 hover:text-indigo-600 p-1">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-600 p-1">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-700 mt-2">
+                                    Overview of computer history from early computing machines to modern computers, introduction to binary number system.
+                                </p>
+                                <div class="mt-3 flex items-center text-sm">
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">Published</span>
+                                    <span class="ml-4 text-gray-600"><i class="fas fa-eye mr-1"></i> 78% watched</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upload New Video -->
+                        <div class="border border-dashed rounded-lg p-6 text-center">
+                            <div class="mb-4">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-indigo-300"></i>
+                            </div>
+                            <h4 class="font-medium text-gray-800 mb-2">Upload New Lecture Video</h4>
+                            <p class="text-sm text-gray-600 mb-4">Drag and drop your video file or click to browse</p>
+                            <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md font-medium">
+                                Upload New Video
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Assignments Section -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                        <i class="fas fa-tasks text-indigo-500 mr-2"></i> 
+                        Assignments
+                        <span class="ml-2 text-sm text-gray-500 font-normal">(2 assignments)</span>
+                    </h3>
+
+                    <div class="space-y-4">
+                        <!-- Assignment 1 -->
+                        <div class="border rounded-lg p-4 bg-gray-50">
+                            <div class="flex justify-between">
+                                <div>
+                                    <h4 class="font-medium">Assignment 1: Computing Basics Quiz</h4>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        <span class="mr-3"><i class="far fa-calendar-alt mr-1"></i> Due: Feb 25, 2025</span>
+                                        <span><i class="fas fa-check-circle mr-1"></i> 78% completed</span>
+                                    </p>
+                                </div>
+                                <div class="flex">
+                                    <button class="text-gray-500 hover:text-indigo-600 p-1">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-gray-500 hover:text-red-600 p-1">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-700 mt-2">
+                                Multiple choice quiz covering the basic concepts of computing history and binary system.
+                            </p>
+                            <div class="mt-3 flex space-x-2">
+                                <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                    <i class="fas fa-eye mr-1"></i> View Submissions
+                                </button>
+                                <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                    <i class="fas fa-edit mr-1"></i> Grade Assignment
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Assignment 2 -->
+                        <div class="border rounded-lg p-4 bg-gray-50">
+                            <div class="flex justify-between">
+                                <div>
+                                    <h4 class="font-medium">Assignment 2: Binary Conversion Exercise</h4>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        <span class="mr-3"><i class="far fa-calendar-alt mr-1"></i> Due: Feb 28, 2025</span>
+                                        <span><i class="fas fa-check-circle mr-1"></i> 65% completed</span>
+                                    </p>
+                                </div>
+                                <div class="flex">
+                                    <button class="text-gray-500 hover:text-indigo-600 p-1">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-gray-500 hover:text-red-600 p-1">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-700 mt-2">
+                                Practice problems for converting between decimal, binary, and hexadecimal number systems.
+                            </p>
+                            <div class="mt-3 flex space-x-2">
+                                <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                    <i class="fas fa-eye mr-1"></i> View Submissions
+                                </button>
+                                <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                    <i class="fas fa-edit mr-1"></i> Grade Assignment
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Create New Assignment -->
+                        <button class="w-full border border-dashed rounded-lg p-4 flex items-center justify-center text-indigo-600 hover:bg-indigo-50">
+                            <i class="fas fa-plus-circle mr-2"></i> Create New Assignment
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Tests/Quizzes Section -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                        <i class="fas fa-clipboard-list text-indigo-500 mr-2"></i> 
+                        Tests & Quizzes
+                        <span class="ml-2 text-sm text-gray-500 font-normal">(1 test)</span>
+                    </h3>
+
+                    <div class="space-y-4">
+                        <!-- Test 1 -->
+                        <div class="border rounded-lg p-4 bg-gray-50">
+                            <div class="flex justify-between">
+                                <div>
+                                    <h4 class="font-medium">Unit 1 Test: Computing Fundamentals</h4>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        <span class="mr-3"><i class="far fa-calendar-alt mr-1"></i> Scheduled: Mar 5, 2025</span>
+                                        <span><i class="fas fa-clock mr-1"></i> Duration: 60 minutes</span>
+                                    </p>
+                                </div>
+                                <div class="flex">
+                                    <button class="text-gray-500 hover:text-indigo-600 p-1">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-gray-500 hover:text-red-600 p-1">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-700 mt-2">
+                                Comprehensive assessment covering all Unit 1 topics including computing history, binary system, and basic concepts.
+                            </p>
+                            <div class="mt-3">
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium">Scheduled</span>
+                                <div class="mt-2 flex space-x-2">
+                                    <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                        <i class="fas fa-eye mr-1"></i> Preview Test
+                                    </button>
+                                    <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                        <i class="fas fa-cog mr-1"></i> Test Settings
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Create New Test -->
+                        <button class="w-full border border-dashed rounded-lg p-4 flex items-center justify-center text-indigo-600 hover:bg-indigo-50">
+                            <i class="fas fa-plus-circle mr-2"></i> Create New Test
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Additional Resources Section -->
+                <div>
+                    <h3 class="text-lg font-medium mb-4 flex items-center">
+                        <i class="fas fa-book text-indigo-500 mr-2"></i> 
+                        Additional Resources
+                        <span class="ml-2 text-sm text-gray-500 font-normal">(2 resources)</span>
+                    </h3>
+
+                    <div class="space-y-4">
+                        <!-- Resource 1 -->
+                        <div class="border rounded-lg p-4 bg-gray-50 flex items-center">
+                            <div class="bg-indigo-100 p-3 rounded mr-4">
+                                <i class="fas fa-file-pdf text-indigo-500 text-xl"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-medium">Introduction to Computer Science - Reading Material</h4>
+                                <p class="text-sm text-gray-600">PDF • 12 pages • Uploaded Feb 15, 2025</p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="text-gray-500 hover:text-indigo-600 p-1">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-indigo-600 p-1">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-red-600 p-1">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Resource 2 -->
+                        <div class="border rounded-lg p-4 bg-gray-50 flex items-center">
+                            <div class="bg-blue-100 p-3 rounded mr-4">
+                                <i class="fas fa-link text-blue-500 text-xl"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-medium">Computer History Museum Virtual Tour</h4>
+                                <p class="text-sm text-gray-600">External Link • Added Feb 17, 2025</p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="text-gray-500 hover:text-indigo-600 p-1">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-indigo-600 p-1">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-red-600 p-1">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Add New Resource -->
+                        <button class="w-full border border-dashed rounded-lg p-4 flex items-center justify-center text-indigo-600 hover:bg-indigo-50">
+                            <i class="fas fa-plus-circle mr-2"></i> Add New Resource
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show/hide attendance modal
+        document.getElementById('attendance-btn').addEventListener('click', function() {
+            document.getElementById('attendance-modal').classList.remove('hidden');
+        });
+        
+        document.getElementById('close-attendance').addEventListener('click', function() {
+            document.getElementById('attendance-modal').classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
