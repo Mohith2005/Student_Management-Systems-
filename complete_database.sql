@@ -170,24 +170,24 @@ INSERT INTO courses (course_code, course_name, department, credits, description)
 
 -- Insert Faculty Members with IDs and Passwords
 INSERT INTO faculty (id, name, email, password, department) VALUES
-(1001, 'Dr. John Smith', 'john.smith@faculty.edu', '$2y$10$8X4mK8jOJ5K5tZ1QhW6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'Computer Science'),  -- Password: FAC1001
-(1002, 'Dr. Sarah Johnson', 'sarah.johnson@faculty.edu', '$2y$10$vN9uY2X7kJ5L8Y1qHw6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'Mathematics'),     -- Password: FAC1002
-(1003, 'Prof. Michael Brown', 'michael.brown@faculty.edu', '$2y$10$pK8mJ9jOJ5K5tZ1QhW6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'Physics'),        -- Password: FAC1003
-(1004, 'Dr. Emily Davis', 'emily.davis@faculty.edu', '$2y$10$rL2mK8jOJ5K5tZ1QhW6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'Chemistry'),          -- Password: FAC1004
-(1005, 'Prof. Robert Wilson', 'robert.wilson@faculty.edu', '$2y$10$tN4mK8jOJ5K5tZ1QhW6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'English');        -- Password: FAC1005
+(1001, 'Dr. John Smith', 'john.smith@faculty.edu', '$2y$10$YourSecretKey123456789uQxwQpSK0ieVBYHoHvWqwkEVIJVRGQO', 'Computer Science'),  -- Password: FAC1001
+(1002, 'Dr. Sarah Johnson', 'sarah.johnson@faculty.edu', '$2y$10$YourSecretKey123456789uR8wRpSK0ieVBYHoHvWqwkEVIJVRGQO', 'Mathematics'),     -- Password: FAC1002
+(1003, 'Prof. Michael Brown', 'michael.brown@faculty.edu', '$2y$10$YourSecretKey123456789uS9xSpSK0ieVBYHoHvWqwkEVIJVRGQO', 'Physics'),        -- Password: FAC1003
+(1004, 'Dr. Emily Davis', 'emily.davis@faculty.edu', '$2y$10$YourSecretKey123456789uT0ySqSK0ieVBYHoHvWqwkEVIJVRGQO', 'Chemistry'),          -- Password: FAC1004
+(1005, 'Prof. Robert Wilson', 'robert.wilson@faculty.edu', '$2y$10$YourSecretKey123456789uU1zRqSK0ieVBYHoHvWqwkEVIJVRGQO', 'English');        -- Password: FAC1005
 
 -- Insert Students with IDs and Passwords
 INSERT INTO students (id, name, email, password, course) VALUES
-(2001, 'Alice Cooper', 'alice.cooper@student.edu', '$2y$10$vB7uY2X7kJ5L8Y1qHw6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'Computer Science'),    -- Password: STU2001
-(2002, 'Bob Wilson', 'bob.wilson@student.edu', '$2y$10$pK8mJ9jOJ5K5tZ1QhW6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'Mathematics'),            -- Password: STU2002
-(2003, 'Carol Martinez', 'carol.martinez@student.edu', '$2y$10$rL2mK8jOJ5K5tZ1QhW6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'Physics'),          -- Password: STU2003
-(2004, 'David Thompson', 'david.thompson@student.edu', '$2y$10$tN4mK8jOJ5K5tZ1QhW6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'Chemistry'),        -- Password: STU2004
-(2005, 'Emma Rodriguez', 'emma.rodriguez@student.edu', '$2y$10$vN9uY2X7kJ5L8Y1qHw6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'English'),          -- Password: STU2005
-(2006, 'Frank Lee', 'frank.lee@student.edu', '$2y$10$8X4mK8jOJ5K5tZ1QhW6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'Computer Science'),         -- Password: STU2006
-(2007, 'Grace Kim', 'grace.kim@student.edu', '$2y$10$pK8mJ9jOJ5K5tZ1QhW6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'Mathematics'),              -- Password: STU2007
-(2008, 'Henry Patel', 'henry.patel@student.edu', '$2y$10$rL2mK8jOJ5K5tZ1QhW6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'Physics'),              -- Password: STU2008
-(2009, 'Isabel Santos', 'isabel.santos@student.edu', '$2y$10$tN4mK8jOJ5K5tZ1QhW6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'Chemistry'),         -- Password: STU2009
-(2010, 'Jack Murphy', 'jack.murphy@student.edu', '$2y$10$vN9uY2X7kJ5L8Y1qHw6YeuFzxP9TxUL6Dp0nQN9qIyeWTiYJNzQeq', 'English');              -- Password: STU2010
+(2001, 'Alice Cooper', 'alice.cooper@student.edu', '$2y$10$YourSecretKey123456789uV2aSrSK0ieVBYHoHvWqwkEVIJVRGQO', 'Computer Science'),    -- Password: STU2001
+(2002, 'Bob Wilson', 'bob.wilson@student.edu', '$2y$10$YourSecretKey123456789uW3bTsSK0ieVBYHoHvWqwkEVIJVRGQO', 'Mathematics'),            -- Password: STU2002
+(2003, 'Carol Martinez', 'carol.martinez@student.edu', '$2y$10$YourSecretKey123456789uX4cUtSK0ieVBYHoHvWqwkEVIJVRGQO', 'Physics'),          -- Password: STU2003
+(2004, 'David Thompson', 'david.thompson@student.edu', '$2y$10$YourSecretKey123456789uY5dVuSK0ieVBYHoHvWqwkEVIJVRGQO', 'Chemistry'),        -- Password: STU2004
+(2005, 'Emma Rodriguez', 'emma.rodriguez@student.edu', '$2y$10$YourSecretKey123456789uZ6eWvSK0ieVBYHoHvWqwkEVIJVRGQO', 'English'),          -- Password: STU2005
+(2006, 'Frank Lee', 'frank.lee@student.edu', '$2y$10$YourSecretKey123456789ua7fXwSK0ieVBYHoHvWqwkEVIJVRGQO', 'Computer Science'),         -- Password: STU2006
+(2007, 'Grace Kim', 'grace.kim@student.edu', '$2y$10$YourSecretKey123456789ub8gYxSK0ieVBYHoHvWqwkEVIJVRGQO', 'Mathematics'),              -- Password: STU2007
+(2008, 'Henry Patel', 'henry.patel@student.edu', '$2y$10$YourSecretKey123456789uc9hZySK0ieVBYHoHvWqwkEVIJVRGQO', 'Physics'),              -- Password: STU2008
+(2009, 'Isabel Santos', 'isabel.santos@student.edu', '$2y$10$YourSecretKey123456789ud0iazSK0ieVBYHoHvWqwkEVIJVRGQO', 'Chemistry'),         -- Password: STU2009
+(2010, 'Jack Murphy', 'jack.murphy@student.edu', '$2y$10$YourSecretKey123456789ue1jbaSK0ieVBYHoHvWqwkEVIJVRGQO', 'English');              -- Password: STU2010
 
 -- Create faculty course assignments
 INSERT INTO faculty_courses (faculty_id, course_id) VALUES
