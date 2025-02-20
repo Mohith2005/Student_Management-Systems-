@@ -1,82 +1,100 @@
 // login.js
 class Login {
     constructor() {
-        this.userTypeToggle = document.querySelector('.toggle-container');
-        this.currentUserType = 'faculty'; // default selection
-        this.loginButton = document.querySelector('.button-container button');
-        this.usernameInput = document.querySelector('input[type="text"]');
-        this.passwordInput = document.querySelector('input[type="password"]');
-        
-        this.initializeEventListeners();
+      this.toggleButtons = document.querySelectorAll('.toggle-btn');
+      this.currentUserType = 'faculty'; // default selection
+      this.usernameInput = document.querySelector('input[type="text"]');
+      this.passwordInput = document.querySelector('input[type="password"]');
+      this.showPasswordIcon = document.querySelector('.show-password');
+      this.loginButton = document.querySelector('.login-btn');
+  
+      this.initialize();
     }
-
-    initializeEventListeners() {
-        // Toggle between faculty and student
-        this.userTypeToggle.addEventListener('click', (e) => {
-            if (e.target.textContent === 'Faculty') {
-                this.currentUserType = 'faculty';
-                e.target.classList.add('active');
-                e.target.nextElementSibling?.classList.remove('active');
-            } else if (e.target.textContent === 'Student') {
-                this.currentUserType = 'student';
-                e.target.classList.add('active');
-                e.target.previousElementSibling?.classList.remove('active');
-            }
-        });
-
-        // Handle login form submission
-        this.loginButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.handleLogin();
-        });
+  
+    initialize() {
+      this.addToggleListeners();
+      this.addPasswordToggleListener();
+      this.addLoginListener();
     }
-
-    handleLogin() {
-        const username = this.usernameInput.value;
-        const password = this.passwordInput.value;
-
-        // Mock user database - in real application, this would be server-side
-        const mockUsers = {
-            faculty: [
-                { username: 'sarah.johnson', password: 'faculty123', name: 'Dr. Sarah Johnson' }
-            ],
-            student: [
-                { username: 'john.doe', password: 'student123', name: 'John Doe' }
-            ]
-        };
-
-        // Validate credentials
-        const users = mockUsers[this.currentUserType];
-        const user = users.find(u => u.username === username && u.password === password);
-
-        if (user) {
-            // Store user info in sessionStorage
-            sessionStorage.setItem('currentUser', JSON.stringify({
-                name: user.name,
-                type: this.currentUserType
-            }));
-
-            // Redirect to appropriate dashboard
-            window.location.href = this.currentUserType === 'faculty' 
-                ? 'faculty_Dashboard.html' 
-                : 'student_Dashboard.html';
+  
+    addToggleListeners() {
+      this.toggleButtons.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          // Remove active class from all toggle buttons
+          this.toggleButtons.forEach((b) => b.classList.remove('active'));
+          // Add active class to the clicked button
+          e.target.classList.add('active');
+          // Update current user type and placeholder text
+          this.currentUserType = e.target.textContent.trim().toLowerCase();
+          this.usernameInput.placeholder = (this.currentUserType === 'faculty' ? 'Faculty' : 'Student') + ' ID or Username';
+        });
+      });
+    }
+  
+    addPasswordToggleListener() {
+      // Toggle password visibility on eye icon click
+      this.showPasswordIcon.addEventListener('click', () => {
+        if (this.passwordInput.type === 'password') {
+          this.passwordInput.type = 'text';
+          this.showPasswordIcon.textContent = '🙈'; // Icon for hidden password
         } else {
-            this.showError('Invalid username or password');
+          this.passwordInput.type = 'password';
+          this.showPasswordIcon.textContent = '👁️'; // Icon for visible password
         }
+      });
     }
-
-    showError(message) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = message;
-        this.loginButton.parentElement.insertBefore(errorDiv, this.loginButton);
-        
-        // Remove error message after 3 seconds
-        setTimeout(() => errorDiv.remove(), 3000);
+  
+    addLoginListener() {
+      this.loginButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.handleLogin();
+      });
     }
-}
+  
+    handleLogin() {
+      const username = this.usernameInput.value.trim();
+      const password = this.passwordInput.value.trim();
+    
+      fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+          user_type: this.currentUserType
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          alert(`Welcome, ${data.name}!`);
+          // Redirect based on user type
+          if (data.user_type === 'faculty') {
+            window.location.href = '/faculty_dashboard';
+          } else {
+            window.location.href = '/student_dashboard';
+          }
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    }
+    
+    
+  }
+  const mockUsers = {
+    faculty: [
+        { username: 'sarah', password: 'fac123', name: 'Dr. Sarah Johnson' }
+    ],
+    student: [
+        { username: 'john', password: 'stu123', name: 'John Doe' }
+    ]
+};
 
-// Initialize login functionality
-document.addEventListener('DOMContentLoaded', () => {
+  
+  // Initialize the login functionality when the DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
     new Login();
-});
+  });
+  
