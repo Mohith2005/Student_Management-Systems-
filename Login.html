@@ -203,6 +203,43 @@
                 padding: 12px 25px;
             }
         }
+
+        .form-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .form-toggle-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #f0f0f0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .form-toggle-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .form {
+            display: none;
+        }
+
+        .form.active {
+            display: block;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -213,7 +250,6 @@
             <h1>Management System</h1>
             <p class="subtitle">Welcome back! Please login to your account.</p>
         </div>
-        
 
         <div class="toggle-container">
             <div class="toggle-background"></div>
@@ -221,7 +257,12 @@
             <button class="toggle-btn">Student</button>
         </div>
 
-        <form>
+        <div class="form-toggle">
+            <button class="form-toggle-btn active" data-form="login">Login</button>
+            <button class="form-toggle-btn" data-form="register">Register</button>
+        </div>
+
+        <form id="loginForm" class="form active">
             <div class="input-container">
                 <span class="input-icon">👤</span>
                 <input type="text" class="input-field" placeholder="Faculty ID or Username">
@@ -237,47 +278,117 @@
                 <button type="submit" class="login-btn">Login</button>
             </div>
         </form>
-    </div>
 
-    <script>
-        const toggleBtns = document.querySelectorAll('.toggle-btn');
-        const toggleBackground = document.querySelector('.toggle-background');
-        const form = document.querySelector('form');
-        const usernameInput = document.querySelector('input[type="text"]');
+        <form id="registerForm" class="form">
+            <div class="input-container">
+                <span class="input-icon">👤</span>
+                <input type="text" class="input-field" name="fullname" placeholder="Full Name" required>
+            </div>
 
-        toggleBtns.forEach((btn, index) => {
-            btn.addEventListener('click', () => {
-                // Remove active class from all buttons
-                toggleBtns.forEach(b => b.classList.remove('active'));
-                // Add active class to clicked button
-                btn.classList.add('active');
+            <div class="input-container">
+                <span class="input-icon">📧</span>
+                <input type="email" class="input-field" name="email" placeholder="Email Address" required>
+            </div>
+
+            <div class="input-container">
+                <span class="input-icon">🆔</span>
+                <input type="text" class="input-field" name="userid" placeholder="Faculty/Student ID" required>
+            </div>
+
+            <div class="input-container">
+                <span class="input-icon">🔑</span>
+                <input type="password" class="input-field" name="password" placeholder="Password" required>
+            </div>
+
+            <div class="input-container">
+                <span class="input-icon">🔐</span>
+                <input type="password" class="input-field" name="confirm_password" placeholder="Confirm Password" required>
+            </div>
+
+            <div class="button-container">
+                <button type="submit" class="login-btn">Register</button>
+            </div>
+        </form>
+
+        <script>
+            const toggleBtns = document.querySelectorAll('.toggle-btn');
+            const toggleBackground = document.querySelector('.toggle-background');
+            const form = document.querySelector('form');
+            const usernameInput = document.querySelector('input[type="text"]');
+            const formToggleBtns = document.querySelectorAll('.form-toggle-btn');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+
+            toggleBtns.forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    toggleBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    
+                    // Move background
+                    if (index === 1) {
+                        toggleBackground.classList.add('student');
+                        usernameInput.placeholder = 'Student ID or Username';
+                    } else {
+                        toggleBackground.classList.remove('student');
+                        usernameInput.placeholder = 'Faculty ID or Username';
+                    }
+                });
+            });
+
+            formToggleBtns.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    formToggleBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+
+                    // Toggle forms
+                    if (btn.dataset.form === 'login') {
+                        loginForm.classList.add('active');
+                        registerForm.classList.remove('active');
+                    } else {
+                        loginForm.classList.remove('active');
+                        registerForm.classList.add('active');
+                    }
+                });
+            });
+
+            // Add form submission handling
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const isStudent = toggleBtns[1].classList.contains('active');
+                const username = usernameInput.value;
+                const password = document.querySelector('input[type="password"]').value;
                 
-                // Move background
-                if (index === 1) {
-                    toggleBackground.classList.add('student');
-                    usernameInput.placeholder = 'Student ID or Username';
-                } else {
-                    toggleBackground.classList.remove('student');
-                    usernameInput.placeholder = 'Faculty ID or Username';
-                }
+                // Add your authentication logic here
+                console.log('Login attempted:', {
+                    type: isStudent ? 'student' : 'faculty',
+                    username,
+                    password
+                });
             });
-        });
 
-        // Add form submission handling
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const isStudent = toggleBtns[1].classList.contains('active');
-            const username = usernameInput.value;
-            const password = document.querySelector('input[type="password"]').value;
-            
-            // Add your authentication logic here
-            console.log('Login attempted:', {
-                type: isStudent ? 'student' : 'faculty',
-                username,
-                password
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const fullname = registerForm.querySelector('input[name="fullname"]').value;
+                const email = registerForm.querySelector('input[name="email"]').value;
+                const userid = registerForm.querySelector('input[name="userid"]').value;
+                const password = registerForm.querySelector('input[name="password"]').value;
+                const confirmPassword = registerForm.querySelector('input[name="confirm_password"]').value;
+
+                // Add your registration logic here
+                console.log('Registration attempted:', {
+                    fullname,
+                    email,
+                    userid,
+                    password,
+                    confirmPassword
+                });
             });
-        });
-    </script>
-    <script src="login.js"></script>
+        </script>
+        <script src="login.js"></script>
+    </div>
 </body>
 </html>
