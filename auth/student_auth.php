@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once "../includes/session.php";
 require_once "../config.php";
 
 // Enable error reporting for debugging
@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         $response['success'] = true;
-        $response['redirect'] = '../dashboard/student_Dashboard.html';
+        $response['redirect'] = '../dashboard/student_Dashboard.php';
         
     } catch (Exception $e) {
         error_log("Login error: " . $e->getMessage());

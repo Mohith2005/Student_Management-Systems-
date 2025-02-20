@@ -1,5 +1,5 @@
 <?php
-require_once '../auth/student_auth.php';
+require_once '../includes/session.php';
 $student_name = isset($_SESSION['student_name']) ? $_SESSION['student_name'] : '';
 ?>
 <style>

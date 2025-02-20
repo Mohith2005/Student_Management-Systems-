@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         $response['success'] = true;
-        $response['redirect'] = '../dashboard/faculty_Dashboard.html';
+        $response['redirect'] = '../dashboard/faculty_dashboard.php';
         
     } catch (Exception $e) {
         error_log("Login error: " . $e->getMessage());
