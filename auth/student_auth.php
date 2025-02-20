@@ -71,12 +71,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Debug log stored hash
         error_log("Stored hash: " . $user['password']);
         
+        // Debug log input password (for debugging only)
+        error_log("Input password: " . $password);
+        
         // Verify password
         $verified = password_verify($password, $user['password']);
         error_log("Password verification result: " . ($verified ? "SUCCESS" : "FAILED"));
         
         if (!$verified) {
-            throw new Exception('Invalid password');
+            error_log("Password verification failed. Possible causes:"
+                . "\n- Incorrect password"
+                . "\n- Password hash mismatch"
+                . "\n- Database password field encoding issue");
+            throw new Exception('Invalid password. Please check your credentials and try again.');
         }
         
         // Login successful
