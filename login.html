@@ -187,7 +187,7 @@
       <div class="input-container">
         <span class="input-icon">🔑</span>
         <input type="password" class="input-field" id="password" name="password" placeholder="Password" required>
-        <span class="show-password" onclick="togglePassword()">👁️</span>
+        <span class="show-password" onclick="togglePassword()">👁</span>
       </div>
       <div class="button-container">
         <a href="#" class="forgot-password">Forgot Password?</a>
@@ -199,26 +199,27 @@
     // Toggle between Faculty and Student login
     const toggleBtns = document.querySelectorAll('.toggle-btn');
     let currentUserType = 'faculty';
+    const emailInput = document.getElementById('email');
 
     toggleBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         toggleBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentUserType = btn.textContent.toLowerCase();
-        document.getElementById('email').placeholder = currentUserType === 'faculty' ? 'Faculty Email' : 'Student Email';
+        emailInput.placeholder = `${currentUserType.charAt(0).toUpperCase() + currentUserType.slice(1)} Email`;
       });
     });
 
-    // Toggle password visibility
     function togglePassword() {
       const passwordInput = document.getElementById('password');
       const showPasswordBtn = document.querySelector('.show-password');
+      
       if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
         showPasswordBtn.textContent = '🔒';
       } else {
         passwordInput.type = 'password';
-        showPasswordBtn.textContent = '👁️';
+        showPasswordBtn.textContent = '👁';
       }
     }
 
@@ -238,13 +239,16 @@
           body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
         });
         
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
         
         if (data.success) {
-          window.location.href = data.redirect;
+          window.location.href = `dashboard/${currentUserType}_dashboard.php`;
         } else {
           alert(data.message || 'Login failed. Please check your credentials.');
-          console.error('Login failed:', data.message);
         }
       } catch (error) {
         console.error('Login error:', error);

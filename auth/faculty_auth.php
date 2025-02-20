@@ -14,7 +14,7 @@ function isFacultyLoggedIn() {
 // Function to redirect if not logged in
 function requireFacultyLogin() {
     if (!isFacultyLoggedIn()) {
-        header("Location: ../index.html");
+        header("Location: ../templates/login.html");
         exit();
     }
 }
@@ -111,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Handle logout
 if (isset($_GET['logout'])) {
     session_destroy();
-    header("Location: ../index.html");
+    header("Location: ../templates/login.html");
     exit();
 }
 ?>

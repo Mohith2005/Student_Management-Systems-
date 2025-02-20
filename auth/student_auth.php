@@ -14,7 +14,7 @@ function isStudentLoggedIn() {
 // Function to redirect if not logged in
 function requireStudentLogin() {
     if (!isStudentLoggedIn()) {
-        header("Location: ../index.html");
+        header("Location: ../templates/login.html");
         exit();
     }
 }
@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Handle logout
 if (isset($_GET['logout'])) {
     session_destroy();
-    header("Location: ../index.html");
+    header("Location: ../templates/login.html");
     exit();
 }
 ?>
