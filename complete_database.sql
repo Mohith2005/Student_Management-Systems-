@@ -5,16 +5,32 @@
 CREATE DATABASE IF NOT EXISTS student_management;
 USE student_management;
 
+-- Create roles table
+CREATE TABLE IF NOT EXISTS roles (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    role_name VARCHAR(50) UNIQUE NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert default roles
+INSERT INTO roles (role_name, description) VALUES
+('admin', 'System administrator with full access'),
+('faculty', 'Faculty members with teaching privileges'),
+('student', 'Students enrolled in courses');
+
 -- Create students table
 CREATE TABLE IF NOT EXISTS students (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
+    role_id INT DEFAULT 3, -- Default to student role
     course VARCHAR(100),
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP NULL DEFAULT NULL,
-    status ENUM('active', 'inactive') DEFAULT 'active'
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 -- Create faculty table
@@ -23,10 +39,12 @@ CREATE TABLE IF NOT EXISTS faculty (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
+    role_id INT DEFAULT 2, -- Default to faculty role
     department VARCHAR(100),
     joining_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP NULL DEFAULT NULL,
-    status ENUM('active', 'inactive') DEFAULT 'active'
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 -- Create courses table
