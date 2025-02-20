@@ -24,18 +24,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $response = array('success' => false, 'message' => '', 'redirect' => '');
     
     try {
-        // Get and sanitize input
-        $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+        // Get input
+        $email = $_POST['email'];
         $password = $_POST['password'];
         
+        // Basic validation
         if (empty($email) || empty($password)) {
             throw new Exception('Please provide both email and password.');
         }
         
-        // Log incoming credentials (remove in production)
-        error_log("Login attempt - Email: " . $email);
+        // Debug log
+        error_log("Login attempt - Email: " . $email . ", Password: " . $password);
         
-        // Check if user exists and get their data
+        // Get user data
         $sql = "SELECT id, name, password FROM students WHERE email = ? AND status = 'active'";
         $stmt = mysqli_prepare($conn, $sql);
         
@@ -58,22 +59,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = mysqli_fetch_assoc($result);
         mysqli_stmt_close($stmt);
         
+        // Debug log stored hash
+        error_log("Stored hash: " . $user['password']);
+        
         // Verify password
-        if (!password_verify($password, $user['password'])) {
-            error_log("Password verification failed for user: " . $email);
-            error_log("Input password: " . $password);
-            error_log("Stored hash: " . $user['password']);
+        $verified = password_verify($password, $user['password']);
+        error_log("Password verification result: " . ($verified ? "SUCCESS" : "FAILED"));
+        
+        if (!$verified) {
             throw new Exception('Invalid password');
         }
         
-        // Set session variables
+        // Login successful
         $_SESSION['student_id'] = $user['id'];
         $_SESSION['student_name'] = $user['name'];
         
-        // Update last login time
+        // Update last login
         $update_sql = "UPDATE students SET last_login = CURRENT_TIMESTAMP WHERE id = ?";
         $update_stmt = mysqli_prepare($conn, $update_sql);
-        
         if ($update_stmt) {
             mysqli_stmt_bind_param($update_stmt, "i", $user['id']);
             mysqli_stmt_execute($update_stmt);
@@ -88,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $response['message'] = $e->getMessage();
     }
     
-    // Send JSON response
+    // Send response
     header('Content-Type: application/json');
     echo json_encode($response);
     exit();
