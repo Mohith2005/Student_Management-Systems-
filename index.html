@@ -179,7 +179,7 @@
       <button class="toggle-btn active">Faculty</button>
       <button class="toggle-btn">Student</button>
     </div>
-    <form id="loginForm">
+    <form id="loginForm" method="POST">
       <div class="input-container">
         <span class="input-icon">👤</span>
         <input type="email" class="input-field" id="email" name="email" placeholder="Faculty Email" required>
@@ -212,7 +212,14 @@
     // Toggle password visibility
     function togglePassword() {
       const passwordInput = document.getElementById('password');
-      passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+      const showPasswordBtn = document.querySelector('.show-password');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        showPasswordBtn.textContent = '🔒';
+      } else {
+        passwordInput.type = 'password';
+        showPasswordBtn.textContent = '👁️';
+      }
     }
 
     // Handle form submission
@@ -237,8 +244,10 @@
           window.location.href = data.redirect;
         } else {
           alert(data.message || 'Login failed. Please check your credentials.');
+          console.error('Login failed:', data.message);
         }
       } catch (error) {
+        console.error('Login error:', error);
         alert('An error occurred. Please try again.');
       }
     });

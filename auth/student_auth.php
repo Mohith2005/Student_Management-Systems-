@@ -21,51 +21,76 @@ function requireStudentLogin() {
 
 // Handle student login
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $response = array('success' => false, 'message' => '', 'redirect' => '');
     
-    // Log incoming credentials (remove in production)
-    error_log("Login attempt - Email: " . $email);
-    
-    $sql = "SELECT id, name, password FROM students WHERE email = ?";
-    
-    if($stmt = mysqli_prepare($conn, $sql)) {
+    try {
+        // Get and sanitize input
+        $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+        $password = $_POST['password'];
+        
+        if (empty($email) || empty($password)) {
+            throw new Exception('Please provide both email and password.');
+        }
+        
+        // Log incoming credentials (remove in production)
+        error_log("Login attempt - Email: " . $email);
+        
+        // Check if user exists and get their data
+        $sql = "SELECT id, name, password FROM students WHERE email = ? AND status = 'active'";
+        $stmt = mysqli_prepare($conn, $sql);
+        
+        if (!$stmt) {
+            throw new Exception("Database error: " . mysqli_error($conn));
+        }
+        
         mysqli_stmt_bind_param($stmt, "s", $email);
         
-        if(mysqli_stmt_execute($stmt)) {
-            $result = mysqli_stmt_get_result($stmt);
-            
-            if(mysqli_num_rows($result) == 1) {
-                $row = mysqli_fetch_assoc($result);
-                
-                // Log hashed passwords for comparison (remove in production)
-                error_log("Stored hash: " . $row['password']);
-                error_log("Verifying password: " . $password);
-                
-                if(password_verify($password, $row['password'])) {
-                    // Login successful
-                    $_SESSION['student_id'] = $row['id'];
-                    $_SESSION['student_name'] = $row['name'];
-                    
-                    // Return success response
-                    echo json_encode(['success' => true, 'redirect' => 'dashboard/student_Dashboard.html']);
-                    exit();
-                } else {
-                    error_log("Password verification failed");
-                }
-            } else {
-                error_log("No user found with email: " . $email);
-            }
-        } else {
-            error_log("Query execution failed: " . mysqli_error($conn));
+        if (!mysqli_stmt_execute($stmt)) {
+            throw new Exception("Query failed: " . mysqli_error($conn));
         }
+        
+        $result = mysqli_stmt_get_result($stmt);
+        
+        if (mysqli_num_rows($result) !== 1) {
+            throw new Exception('Invalid email address');
+        }
+        
+        $user = mysqli_fetch_assoc($result);
         mysqli_stmt_close($stmt);
-    } else {
-        error_log("Statement preparation failed: " . mysqli_error($conn));
+        
+        // Verify password
+        if (!password_verify($password, $user['password'])) {
+            error_log("Password verification failed for user: " . $email);
+            error_log("Input password: " . $password);
+            error_log("Stored hash: " . $user['password']);
+            throw new Exception('Invalid password');
+        }
+        
+        // Set session variables
+        $_SESSION['student_id'] = $user['id'];
+        $_SESSION['student_name'] = $user['name'];
+        
+        // Update last login time
+        $update_sql = "UPDATE students SET last_login = CURRENT_TIMESTAMP WHERE id = ?";
+        $update_stmt = mysqli_prepare($conn, $update_sql);
+        
+        if ($update_stmt) {
+            mysqli_stmt_bind_param($update_stmt, "i", $user['id']);
+            mysqli_stmt_execute($update_stmt);
+            mysqli_stmt_close($update_stmt);
+        }
+        
+        $response['success'] = true;
+        $response['redirect'] = '../dashboard/student_Dashboard.html';
+        
+    } catch (Exception $e) {
+        error_log("Login error: " . $e->getMessage());
+        $response['message'] = $e->getMessage();
     }
     
-    // Login failed
-    echo json_encode(['success' => false, 'message' => 'Invalid email or password']);
+    // Send JSON response
+    header('Content-Type: application/json');
+    echo json_encode($response);
     exit();
 }
 
