@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS students (
     password VARCHAR(255) NOT NULL,
     course VARCHAR(100),
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    last_login TIMESTAMP,
+    last_login TIMESTAMP NULL DEFAULT NULL,
     status ENUM('active', 'inactive') DEFAULT 'active'
 );
 
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS faculty (
     password VARCHAR(255) NOT NULL,
     department VARCHAR(100),
     joining_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    last_login TIMESTAMP,
+    last_login TIMESTAMP NULL DEFAULT NULL,
     status ENUM('active', 'inactive') DEFAULT 'active'
 );
 
