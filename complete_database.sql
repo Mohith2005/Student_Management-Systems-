@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS student_courses (
     id INT PRIMARY KEY AUTO_INCREMENT,
     student_id INT,
     course_id INT,
-    enrollment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    enrollment_date TIMESTAMP DEFAULT CU.RRENT_TIMESTAMP,
     grade VARCHAR(2),
     status ENUM('enrolled', 'completed', 'dropped') DEFAULT 'enrolled',
     FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
