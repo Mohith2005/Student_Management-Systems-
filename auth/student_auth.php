@@ -8,7 +8,7 @@ ini_set('display_errors', 1);
 
 // Function to check if student is logged in
 function isStudentLoggedIn() {
-    return isset($_SESSION['student_id']) && !empty($_SESSION['student_id']);
+    return isset($_SESSION['student_id']) && !empty($_SESSION['student_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'student';
 }
 
 // Function to redirect if not logged in
@@ -36,8 +36,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Debug log
         error_log("Login attempt - Email: " . $email . ", Password: " . $password);
         
-        // Get user data
-        $sql = "SELECT id, name, password FROM students WHERE email = ? AND status = 'active'";
+        // Get user data with role information
+        $sql = "SELECT s.id, s.name, s.password, s.status, r.role_name 
+                FROM students s 
+                JOIN roles r ON s.role_id = r.id 
+                WHERE s.email = ? AND s.status = 'active'";
+        
         $stmt = mysqli_prepare($conn, $sql);
         
         if (!$stmt) {
@@ -59,6 +63,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = mysqli_fetch_assoc($result);
         mysqli_stmt_close($stmt);
         
+        // Verify role
+        if ($user['role_name'] !== 'student') {
+            throw new Exception('Invalid account type');
+        }
+        
         // Debug log stored hash
         error_log("Stored hash: " . $user['password']);
         
@@ -73,6 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Login successful
         $_SESSION['student_id'] = $user['id'];
         $_SESSION['student_name'] = $user['name'];
+        $_SESSION['role'] = 'student';
         
         // Update last login
         $update_sql = "UPDATE students SET last_login = CURRENT_TIMESTAMP WHERE id = ?";
