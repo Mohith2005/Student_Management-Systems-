@@ -179,14 +179,14 @@
       <button class="toggle-btn active">Faculty</button>
       <button class="toggle-btn">Student</button>
     </div>
-    <form>
+    <form id="loginForm">
       <div class="input-container">
         <span class="input-icon">👤</span>
-        <input type="text" class="input-field" placeholder="Faculty ID or Username">
+        <input type="text" name="username" class="input-field" placeholder="Faculty ID or Username" required>
       </div>
       <div class="input-container">
         <span class="input-icon">🔑</span>
-        <input type="password" class="input-field" placeholder="Password">
+        <input type="password" name="password" class="input-field" placeholder="Password" required>
         <span class="show-password">👁️</span>
       </div>
       <div class="button-container">

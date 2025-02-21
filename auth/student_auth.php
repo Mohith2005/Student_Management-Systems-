@@ -18,7 +18,7 @@ if (empty($username) || empty($password)) {
 }
 
 // Prepare SQL statement to prevent SQL injection
-$sql = "SELECT id, name, password FROM students WHERE email = ?";
+$sql = "SELECT id, name, email, password, course FROM students WHERE email = ?";
 
 if ($stmt = mysqli_prepare($conn, $sql)) {
     mysqli_stmt_bind_param($stmt, "s", $username);
@@ -29,16 +29,20 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
         if (mysqli_num_rows($result) == 1) {
             $row = mysqli_fetch_assoc($result);
             
-            if (password_verify($password, $row['password'])) {
+            if ($password === $row['password']) {  // Direct password comparison
                 // Password is correct, create session
                 $_SESSION['student_id'] = $row['id'];
                 $_SESSION['student_name'] = $row['name'];
+                $_SESSION['student_email'] = $row['email'];
+                $_SESSION['student_course'] = $row['course'];
                 $_SESSION['user_type'] = 'student';
                 
                 echo json_encode([
                     'status' => 'success',
                     'message' => 'Login successful',
                     'name' => $row['name'],
+                    'email' => $row['email'],
+                    'course' => $row['course'],
                     'user_type' => 'student'
                 ]);
             } else {
@@ -50,13 +54,13 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
         } else {
             echo json_encode([
                 'status' => 'error',
-                'message' => 'Student account not found'
+                'message' => 'Student not found'
             ]);
         }
     } else {
         echo json_encode([
             'status' => 'error',
-            'message' => 'Database error occurred'
+            'message' => 'Database error'
         ]);
     }
     
@@ -64,7 +68,7 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
 } else {
     echo json_encode([
         'status' => 'error',
-        'message' => 'Database preparation failed'
+        'message' => 'Database error'
     ]);
 }
 

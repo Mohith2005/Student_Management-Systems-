@@ -1,56 +1,103 @@
 // student_dashboard.js
 class StudentDashboard {
     constructor() {
-        this.validateSession();
+        // studentData is passed from PHP
         this.initializeDashboard();
         this.setupEventListeners();
     }
 
-    validateSession() {
-        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
-        if (!currentUser.name || currentUser.type !== 'student') {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        // Update welcome message
-        const welcomeMessage = document.querySelector('.dashboard-header h1');
-        if (welcomeMessage) {
-            welcomeMessage.textContent = `Welcome back, ${currentUser.name}`;
-        }
-    }
-
     initializeDashboard() {
-        this.updateNotificationBadges();
-        this.loadCourseProgress();
+        this.updateWelcomeMessage();
+        this.updateStatistics();
+        this.updateCourseGrid();
+        this.createUserInfoPopup();
+        this.updateUserAvatar();
     }
 
-    updateNotificationBadges() {
-        // Update notification counts
-        const noticeCards = document.querySelectorAll('.card');
-        noticeCards.forEach(card => {
-            const notices = card.querySelectorAll('.notice').length;
-            const badge = card.querySelector('.badge');
-            if (badge) {
-                badge.textContent = `${notices} New`;
-            }
-        });
+    updateWelcomeMessage() {
+        const studentName = document.querySelector('#studentName');
+        if (studentName) {
+            studentName.textContent = studentData.name;
+        }
     }
 
-    loadCourseProgress() {
-        // Update progress bars for each course
-        document.querySelectorAll('.course-card').forEach(card => {
-            const progressText = card.querySelector('.progress-info');
-            const progressBar = card.querySelector('.progress-bar');
-            
-            if (progressText && progressBar) {
-                const progressMatch = progressText.textContent.match(/(\d+)%/);
-                if (progressMatch) {
-                    const progressValue = progressMatch[1];
-                    progressBar.style.width = `${progressValue}%`;
-                }
+    updateStatistics() {
+        const stats = {
+            'Enrolled Courses': studentData.courses.length,
+            'Completed Courses': 0, // Will be calculated from database
+            'Current GPA': '0.00',
+            'Attendance': '0%'
+        };
+
+        const statsGrid = document.getElementById('statsGrid');
+        statsGrid.innerHTML = Object.entries(stats)
+            .map(([label, value]) => `
+                <div class="stat-card">
+                    <h3>${value}</h3>
+                    <p>${label}</p>
+                </div>
+            `).join('');
+    }
+
+    updateCourseGrid() {
+        const courseGrid = document.getElementById('courseGrid');
+        courseGrid.innerHTML = studentData.courses
+            .map(course => `
+                <div class="course-card">
+                    <div class="course-header">
+                        <div class="course-icon">
+                            ${course.course_code.substring(0, 2)}
+                        </div>
+                        <div>
+                            <h3>${course.course_code} - ${course.course_name}</h3>
+                            <p>${course.department}</p>
+                        </div>
+                    </div>
+                    <div class="course-stats">
+                        <div class="stat">
+                            <h4>Credits</h4>
+                            <p>${course.credits}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+    }
+
+    updateUserAvatar() {
+        const avatar = document.querySelector('#userAvatar');
+        if (avatar) {
+            const initials = studentData.name
+                .split(' ')
+                .map(n => n[0])
+                .join('')
+                .toUpperCase();
+            avatar.textContent = initials;
+        }
+    }
+
+    createUserInfoPopup() {
+        const modal = document.getElementById('profileModal');
+        const closeBtn = modal.querySelector('.close');
+        const avatar = document.getElementById('userAvatar');
+
+        // Update modal content
+        document.getElementById('modalName').textContent = studentData.name;
+        document.getElementById('modalEmail').textContent = studentData.email;
+        document.getElementById('modalCourse').textContent = studentData.course;
+        document.getElementById('modalId').textContent = studentData.id;
+
+        // Show modal on avatar click
+        avatar.onclick = () => modal.style.display = "block";
+        
+        // Close modal on X click
+        closeBtn.onclick = () => modal.style.display = "none";
+        
+        // Close modal on outside click
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
             }
-        });
+        }
     }
 
     setupEventListeners() {
@@ -114,7 +161,7 @@ class StudentDashboard {
     }
 }
 
-// Initialize student dashboard
+// Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new StudentDashboard();
 });

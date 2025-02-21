@@ -2,11 +2,11 @@ class Login {
     constructor() {
         this.toggleButtons = document.querySelectorAll('.toggle-btn');
         this.currentUserType = 'faculty'; // default selection
-        this.usernameInput = document.querySelector('input[type="text"]');
-        this.passwordInput = document.querySelector('input[type="password"]');
+        this.usernameInput = document.querySelector('input[name="username"]');
+        this.passwordInput = document.querySelector('input[name="password"]');
         this.showPasswordIcon = document.querySelector('.show-password');
         this.loginButton = document.querySelector('.login-btn');
-        this.form = document.querySelector('form');
+        this.loginForm = document.querySelector('#loginForm');
 
         this.initialize();
     }
@@ -20,6 +20,7 @@ class Login {
     addToggleListeners() {
         this.toggleButtons.forEach((btn) => {
             btn.addEventListener('click', (e) => {
+                e.preventDefault();
                 // Remove active class from all toggle buttons
                 this.toggleButtons.forEach((b) => b.classList.remove('active'));
                 // Add active class to the clicked button
@@ -40,7 +41,7 @@ class Login {
     }
 
     addLoginListener() {
-        this.form.addEventListener('submit', (e) => {
+        this.loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             this.handleLogin();
         });
@@ -64,6 +65,7 @@ class Login {
         const password = this.passwordInput.value.trim();
         
         // Show loading state
+        const originalButtonText = this.loginButton.textContent;
         this.loginButton.textContent = 'Logging in...';
         this.loginButton.disabled = true;
 
@@ -79,7 +81,12 @@ class Login {
             },
             body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.status === 'success') {
                 // Show success message
@@ -87,8 +94,8 @@ class Login {
                 
                 // Redirect based on user type
                 const dashboardPath = this.currentUserType === 'faculty'
-                    ? 'dashboard/faculty_dashboard.html'
-                    : 'dashboard/student_Dashboard.html';
+                    ? 'dashboard/faculty_dashboard.php'
+                    : 'dashboard/student_dashboard.php';
                     
                 window.location.href = dashboardPath;
             } else {
@@ -100,7 +107,7 @@ class Login {
         })
         .finally(() => {
             // Reset button state
-            this.loginButton.textContent = 'Login';
+            this.loginButton.textContent = originalButtonText;
             this.loginButton.disabled = false;
         });
     }
