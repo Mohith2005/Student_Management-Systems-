@@ -1,9 +1,22 @@
+<?php
+session_start();
+
+// Redirect if already logged in
+if (isset($_SESSION['faculty_id'])) {
+    header("Location: dashboard/faculty_dashboard.php");
+    exit;
+} elseif (isset($_SESSION['student_id'])) {
+    header("Location: dashboard/student_dashboard.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduConnect</title>
+  <title>EduConnect - Welcome</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
     * {
       margin: 0;
@@ -50,118 +63,54 @@
     }
     h1 {
       color: #2d3748;
-      font-size: 28px;
-      font-weight: 700;
+      font-size: 32px;
       margin-bottom: 10px;
+      font-weight: 700;
     }
     .subtitle {
       color: #718096;
       font-size: 16px;
       margin-bottom: 30px;
     }
-    .toggle-container {
-      background: hsl(288, 38%, 95%);
-      border-radius: 12px;
-      padding: 4px;
-      display: flex;
-      margin-bottom: 30px;
-      position: relative;
+    .login-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
     }
-    .toggle-btn {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .toggle-btn.active {
-      background: #2c5282;
-      color: white;
-    }
-    .input-container {
-      margin-bottom: 20px;
-      position: relative;
-    }
-    .input-field {
-      width: 100%;
-      padding: 15px 15px 15px 50px;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 16px;
-      transition: all 0.3s ease;
-      color: #4a5568;
-    }
-    .input-field:focus {
-      border-color: #667eea;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-    .input-icon {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 20px;
-      color: #a0aec0;
-      pointer-events: none;
-    }
-    .show-password {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 18px;
-      color: #718096;
-    }
-    .button-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 30px;
-    }
-    .forgot-password {
-      color: #667eea;
+    .login-option {
       text-decoration: none;
-      font-size: 14px;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+      background: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .login-option i {
+      font-size: 2rem;
+      color: #4F46E5;
+    }
+    .login-option span {
+      color: #2d3748;
       font-weight: 600;
-      transition: color 0.3s ease;
     }
-    .forgot-password:hover {
-      color: #764ba2;
+    .login-option:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
     }
-    .login-btn {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      padding: 15px 35px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .login-option.faculty {
+      border: 2px solid #4F46E5;
     }
-    .login-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    .login-option.student {
+      border: 2px solid #10B981;
     }
-    @media (max-width: 480px) {
-      .container {
-        padding: 30px 20px;
-      }
-      .logo {
-        width: 60px;
-        height: 60px;
-      }
-      h1 {
-        font-size: 24px;
-      }
-      .login-btn {
-        padding: 12px 25px;
-      }
+    .login-option.student i {
+      color: #10B981;
     }
   </style>
 </head>
@@ -173,28 +122,19 @@
         <img src="./logo/student.jpeg" alt="Student Logo" class="logo">
       </div>
       <h1>EduConnect</h1>
-      <p class="subtitle">Welcome back! Please login to your account.</p>
+      <p class="subtitle">Choose your login type to continue</p>
     </div>
-    <div class="toggle-container">
-      <button class="toggle-btn active">Faculty</button>
-      <button class="toggle-btn">Student</button>
+
+    <div class="login-options">
+      <a href="login/faculty_login.php" class="login-option faculty">
+        <i class="fas fa-chalkboard-teacher"></i>
+        <span>Faculty</span>
+      </a>
+      <a href="login/student_login.php" class="login-option student">
+        <i class="fas fa-user-graduate"></i>
+        <span>Student</span>
+      </a>
     </div>
-    <form id="loginForm">
-      <div class="input-container">
-        <span class="input-icon">👤</span>
-        <input type="text" name="username" class="input-field" placeholder="Faculty ID or Username" required>
-      </div>
-      <div class="input-container">
-        <span class="input-icon">🔑</span>
-        <input type="password" name="password" class="input-field" placeholder="Password" required>
-        <span class="show-password">👁️</span>
-      </div>
-      <div class="button-container">
-        <a href="#" class="forgot-password">Forgot Password?</a>
-        <button type="submit" class="login-btn">Login</button>
-      </div>
-    </form>
   </div>
-  <script src="login.js"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@ require_once "../components/navbar.php";
 
 // Check if faculty is logged in
 if (!isset($_SESSION['faculty_id'])) {
-    header("Location: ../index.html");
+    header("Location: ../index.php");
     exit;
 }
 
