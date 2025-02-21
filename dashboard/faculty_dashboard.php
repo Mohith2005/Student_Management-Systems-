@@ -81,7 +81,7 @@ $sql = "SELECT s.name as student_name, c.course_name,
             WHEN sv.id IS NOT NULL THEN 'watched video'
             WHEN st.id IS NOT NULL THEN 'took test'
         END as activity_type,
-        COALESCE(sa.submitted_at, sv.watched_at, st.taken_at) as activity_time
+        COALESCE(sa.submitted_at, sv.watched_at, st.submitted_at) as activity_time
         FROM students s
         JOIN student_courses sc ON s.id = sc.student_id
         JOIN courses c ON sc.course_id = c.id

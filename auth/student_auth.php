@@ -18,7 +18,12 @@ if (empty($username) || empty($password)) {
 }
 
 // Prepare SQL statement to prevent SQL injection
-$sql = "SELECT id, name, email, password, course FROM students WHERE email = ?";
+$sql = "SELECT s.id, s.name, s.email, s.password, s.enrollment_number, GROUP_CONCAT(c.course_name) as courses 
+        FROM students s 
+        LEFT JOIN student_courses sc ON s.id = sc.student_id 
+        LEFT JOIN courses c ON sc.course_id = c.id 
+        WHERE s.email = ? 
+        GROUP BY s.id";
 
 if ($stmt = mysqli_prepare($conn, $sql)) {
     mysqli_stmt_bind_param($stmt, "s", $username);
@@ -29,12 +34,13 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
         if (mysqli_num_rows($result) == 1) {
             $row = mysqli_fetch_assoc($result);
             
-            if ($password === $row['password']) {  // Direct password comparison
+            if ($password === $row['password']) {  // Note: This should be updated to use password_verify() in production
                 // Password is correct, create session
                 $_SESSION['student_id'] = $row['id'];
                 $_SESSION['student_name'] = $row['name'];
                 $_SESSION['student_email'] = $row['email'];
-                $_SESSION['student_course'] = $row['course'];
+                $_SESSION['enrollment_number'] = $row['enrollment_number'];
+                $_SESSION['courses'] = $row['courses'];
                 $_SESSION['user_type'] = 'student';
                 
                 echo json_encode([
@@ -42,7 +48,8 @@ if ($stmt = mysqli_prepare($conn, $sql)) {
                     'message' => 'Login successful',
                     'name' => $row['name'],
                     'email' => $row['email'],
-                    'course' => $row['course'],
+                    'enrollment_number' => $row['enrollment_number'],
+                    'courses' => $row['courses'],
                     'user_type' => 'student'
                 ]);
             } else {

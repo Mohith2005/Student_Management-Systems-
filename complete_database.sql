@@ -54,6 +54,30 @@ CREATE TABLE IF NOT EXISTS assignments (
     FOREIGN KEY (course_id) REFERENCES courses(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Create tests table
+CREATE TABLE IF NOT EXISTS tests (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    course_id INT NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    description TEXT,
+    test_date DATETIME NOT NULL,
+    duration INT NOT NULL, -- in minutes
+    max_score INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Create student_tests table
+CREATE TABLE IF NOT EXISTS student_tests (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    test_id INT NOT NULL,
+    score DECIMAL(5,2),
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (test_id) REFERENCES tests(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- Create student_assignments table
 CREATE TABLE IF NOT EXISTS student_assignments (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -126,6 +150,17 @@ INSERT INTO student_courses (student_id, course_id) VALUES
 INSERT INTO assignments (course_id, title, description, due_date) VALUES
 (1, 'Python Basics', 'Create a simple calculator using Python', '2025-03-01 23:59:59'),
 (2, 'Calculus Assignment', 'Solve the given differential equations', '2025-03-05 23:59:59');
+
+-- Create test data for tests
+INSERT INTO tests (course_id, title, description, test_date, duration, max_score) VALUES
+(1, 'Python Basics Test', 'Test covering basic Python concepts', '2025-03-15 10:00:00', 120, 100),
+(2, 'Calculus Midterm', 'Midterm exam covering differential calculus', '2025-03-20 14:00:00', 180, 100);
+
+-- Insert some test scores
+INSERT INTO student_tests (student_id, test_id, score) VALUES
+(1, 1, 85.5),
+(2, 1, 92.0),
+(1, 2, 88.0);
 
 -- Add some test video lectures
 INSERT INTO video_lectures (course_id, title, description, video_url) VALUES

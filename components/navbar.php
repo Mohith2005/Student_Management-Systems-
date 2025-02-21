@@ -51,15 +51,15 @@ function getNavbar($userType = 'student') {
         }
 
         .nav-link {
-            color: #4B5563;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.375rem;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            text-decoration: none;
+            color: #4B5563;
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
         }
 
         .nav-link:hover {
@@ -73,7 +73,16 @@ function getNavbar($userType = 'student') {
         }
 
         .nav-link i {
-            font-size: 1.1em;
+            font-size: 1.125rem;
+        }
+
+        .nav-link-danger {
+            color: #DC2626;
+        }
+
+        .nav-link-danger:hover {
+            color: #DC2626;
+            background: #FEE2E2;
         }
 
         .profile-menu {
@@ -175,6 +184,17 @@ function getNavbar($userType = 'student') {
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 1024px) {
+            .navbar-menu {
+                gap: 1rem;
+            }
+            
+            .nav-link {
+                padding: 0.375rem 0.5rem;
+                font-size: 0.875rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -309,29 +329,34 @@ function getStudentMenu() {
 
 function getFacultyMenu() {
     return '
-        <a href="faculty_Dashboard.html" class="navbar-item">
+    <div class="navbar-menu">
+        <a href="faculty_dashboard.php" class="nav-link">
             <i class="fas fa-home"></i> Dashboard
         </a>
-        <a href="faculty_analytics.php" class="navbar-item">
-            <i class="fas fa-chart-line"></i> Analytics
+        <a href="faculty_analytics.php" class="nav-link">
+            <i class="fas fa-chart-bar"></i> Analytics
         </a>
-        <a href="manage_tests.php" class="navbar-item">
-            <i class="fas fa-tasks"></i> Manage Tests
+        <a href="manage_assignments.php" class="nav-link">
+            <i class="fas fa-tasks"></i> Assignments
         </a>
-        <a href="manage_videos.php" class="navbar-item">
-            <i class="fas fa-video"></i> Manage Videos
+        <a href="manage_tests.php" class="nav-link">
+            <i class="fas fa-file-alt"></i> Tests
         </a>
-        <a href="manage_assignments.php" class="navbar-item">
-            <i class="fas fa-book"></i> Assignments
-        </a>
-        <a href="faculty_messages.php" class="navbar-item">
-            <i class="fas fa-envelope"></i> Messages
-        </a>
-        <a href="manage_students.php" class="navbar-item">
+        <a href="manage_students.php" class="nav-link">
             <i class="fas fa-users"></i> Students
         </a>
-        <a href="faculty_profile.php" class="navbar-item">
+        <a href="manage_videos.php" class="nav-link">
+            <i class="fas fa-video"></i> Videos
+        </a>
+        <a href="faculty_messages.php" class="nav-link">
+            <i class="fas fa-envelope"></i> Messages
+        </a>
+        <a href="faculty_profile.php" class="nav-link">
             <i class="fas fa-user"></i> Profile
-        </a>';
+        </a>
+        <a href="../auth/logout.php" class="nav-link nav-link-danger">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>';
 }
 ?>
